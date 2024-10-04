@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StackParamList } from "../Navigation/StackNavigator";
+import { LoadingContext } from "../context/LoadingContext";
 
 const loginSchema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -33,10 +34,12 @@ type LoginScreenProp = NativeStackNavigationProp<StackParamList, "Login">;
 
 const Login: React.FC = () => {
   const navigation = useNavigation<LoginScreenProp>();
+  const {showLoading, hideLoading} = useContext(LoadingContext)
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<LoginData>({
     resolver: yupResolver(loginSchema),
@@ -48,6 +51,13 @@ const Login: React.FC = () => {
 
   const onSubmit = (data: LoginData) => {
     console.log(data);
+    showLoading();
+
+    setTimeout(() => {
+      hideLoading();
+      reset();
+      navigation.navigate("Dashboard");
+    }, 2000);
   };
 
   return (

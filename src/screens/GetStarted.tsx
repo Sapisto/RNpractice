@@ -38,9 +38,15 @@ const GetStarted: React.FC<GetStartedProps> = ({ navigation }) => {
       <Button title="Get started" onPress={handleGetStarted} />
       <Button title="Show Modal" onPress={showModal} />
       <GlobalModal modalText="Success!!">
-        <Icon name="check-circle" size={80} color="#28a745" style={styles.icon} /> 
+        <Icon
+          name="check-circle"
+          size={70}
+          color="#28a745"
+          style={styles.icon}
+        />
         <Text style={styles.modalContent}>
-          Please make sure to check out all the features of this app as you will enjoy alot of goodies!!
+          Please make sure to check out all the features of this app as you will
+          enjoy alot of goodies!!
         </Text>
       </GlobalModal>
     </View>
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   icon: {
-    marginVertical: 10, 
+    marginVertical: 10,
   },
 });
 

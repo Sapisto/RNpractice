@@ -1,6 +1,6 @@
 import React, { createContext, useState, ReactNode } from 'react';
 
-type ModalContextType = {
+interface ModalContextType  {
   isModalVisible: boolean;
   showModal: () => void;
   hideModal: () => void;

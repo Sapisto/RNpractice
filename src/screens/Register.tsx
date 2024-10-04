@@ -1,5 +1,11 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import React, { useContext } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -8,8 +14,9 @@ import Button from "../components/Button";
 import CustomInput from "../components/InputField";
 import { StackParamList } from "../Navigation/StackNavigator";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { LoadingContext } from "../context/LoadingContext";
 
-type RegisterScreenProp = NativeStackNavigationProp<StackParamList, 'Register'>;
+type RegisterScreenProp = NativeStackNavigationProp<StackParamList, "Register">;
 
 const schemaValidation = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
@@ -34,18 +41,20 @@ interface RegisterFormData {
 }
 
 const Register: React.FC = () => {
+  const { showLoading, hideLoading } = useContext(LoadingContext);
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schemaValidation),
     defaultValues: {
-      firstName: '',
-      lastName:'',
-      email: '',
-      password: '',
-      confirmPassword: '',
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -53,7 +62,13 @@ const Register: React.FC = () => {
 
   const onSubmit = (data: RegisterFormData) => {
     console.log(data);
-    // Handle successful registration here
+    showLoading();
+
+    setTimeout(() => {
+      hideLoading();
+      reset(); // Reset form values
+      navigation.navigate("Login");
+    }, 2000);
   };
 
   return (
@@ -61,28 +76,20 @@ const Register: React.FC = () => {
       <Text style={styles.header}>Welcome onboard</Text>
       <Text style={styles.subHeader}>Let's help you meet your tasks</Text>
 
-      <CustomInput 
+      <CustomInput
         control={control}
         name="firstName"
         placeholder="First Name"
       />
-      <CustomInput 
-        control={control}
-        name="lastName"
-        placeholder="Last Name"
-      />
-      <CustomInput 
-        control={control}
-        name="email"
-        placeholder="Email"
-      />
-      <CustomInput 
+      <CustomInput control={control} name="lastName" placeholder="Last Name" />
+      <CustomInput control={control} name="email" placeholder="Email" />
+      <CustomInput
         control={control}
         name="password"
         placeholder="Password"
         secureTextEntry
       />
-      <CustomInput 
+      <CustomInput
         control={control}
         name="confirmPassword"
         placeholder="Confirm Password"
@@ -92,7 +99,7 @@ const Register: React.FC = () => {
       <Button title="Register" onPress={handleSubmit(onSubmit)} />
       <View style={styles.footer}>
         <Text style={styles.footerText}>Already have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.signInText}> Sign In</Text>
         </TouchableOpacity>
       </View>

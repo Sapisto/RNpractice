@@ -5,7 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import { ModalProvider } from "./src/context/ModalContext";
 import GlobalModal from "./src/components/Modal";
 import { LoadingProvider } from "./src/context/LoadingContext";
-import Preloader from "./src/components/Preloader";
+// import Preloader from "./src/components/Preloader";
 
 const App: React.FC = () => {
   return (
@@ -14,7 +14,7 @@ const App: React.FC = () => {
         <NavigationContainer>
           <StackNavigator />
           <GlobalModal />
-          <Preloader/>
+          {/* <Preloader/> */}
           <StatusBar style="auto" />
         </NavigationContainer>
       </ModalProvider>

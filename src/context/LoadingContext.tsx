@@ -1,4 +1,5 @@
 import React, { createContext, useState, ReactNode } from "react";
+import Preloader from "../components/Preloader";
 
 interface LoadingContextType {
   isLoading: boolean;
@@ -22,6 +23,7 @@ export const LoadingProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <LoadingContext.Provider value={{ isLoading, showLoading, hideLoading }}>
+      {isLoading && <Preloader />}
       {children}
     </LoadingContext.Provider>
   );

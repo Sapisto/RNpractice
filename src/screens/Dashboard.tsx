@@ -14,6 +14,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LoadingContext } from "../context/LoadingContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import Card from "../components/DashboardCard";
+import PinModal from "../components/PinModal";
 
 type DashboardScreenProp = NativeStackNavigationProp<
   StackParamList,
@@ -24,6 +25,7 @@ const Dashboard: React.FC = () => {
   const navigation = useNavigation<DashboardScreenProp>();
   const { showLoading, hideLoading } = useContext(LoadingContext);
   const [isSidePanelVisible, setSidePanelVisible] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const handleLogout = () => {
     showLoading();
@@ -35,6 +37,19 @@ const Dashboard: React.FC = () => {
 
   const toggleSidePanel = () => {
     setSidePanelVisible(!isSidePanelVisible);
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const toggleIcon = () => {
+    showLoading(); // Show loading indicator
+    setTimeout(() => {
+      hideLoading(); // Hide loading after 2 seconds
+      setModalVisible(false); // Close the modal
+      navigation.navigate("GetStarted"); // Navigate to Login
+    }, 2000);
   };
 
   const cardData = [
@@ -67,22 +82,35 @@ const Dashboard: React.FC = () => {
       </View>
 
       <Text style={styles.welcomeText}>Welcome to your dashboard!</Text>
-      
+
       <View style={styles.cardContainer}>
-        {cardData.map((card, index) => (
-          <Card
-            key={index}
-            iconName={card.iconName}
-            number={card.number}
-            text={card.text}
-            iconColor={card.iconColor}
-          />
-        ))}
+        {cardData &&
+          cardData.map((card, index) => (
+            <Card
+              key={index}
+              iconName={card.iconName}
+              number={card.number}
+              text={card.text}
+              iconColor={card.iconColor}
+            />
+          ))}
       </View>
 
+      {/* Create PIN Button */}
       <View style={styles.contentContainer}>
+        <Button title="Create PIN" onPress={toggleModal} />
         <Button title="Logout" onPress={handleLogout} />
       </View>
+
+      {/* PinModal Component */}
+      {isModalVisible && (
+        <PinModal
+          isVisible={isModalVisible}
+          onClose={() => toggleModal()}
+          onPress={toggleIcon}
+        />
+      )}
+      {/* <PinModal isVisible={isModalVisible} onClose={toggleModal} /> */}
     </ScrollView>
   );
 };
@@ -108,17 +136,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   contentContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
   welcomeText: {
-    fontSize: 32, 
-    fontWeight: "bold", 
+    fontSize: 32,
+    fontWeight: "bold",
     marginVertical: 20,
     textAlign: "center",
-    marginTop:100,
+    marginTop: 100,
     color: "#333",
   },
 });

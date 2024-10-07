@@ -14,7 +14,7 @@ type GetStartedProps = {
 
 const GetStarted: React.FC<GetStartedProps> = ({ navigation }) => {
   const { showModal } = useContext(ModalContext);
-  const { showLoading, hideLoading } = useContext(LoadingContext)!;
+  const { showLoading, hideLoading } = useContext(LoadingContext);
 
   const handleGetStarted = () => {
     showLoading();
